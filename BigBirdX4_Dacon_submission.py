@@ -39,7 +39,7 @@ def create_folds(data, num_splits):
         data.loc[v_, "kfold"] = f
     return data
 
-df = pd.read_csv("/data/train.csv")
+df = pd.read_csv("./data/train.csv")
 
 df = create_folds(df, 10)
 
