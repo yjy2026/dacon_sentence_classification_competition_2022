@@ -114,7 +114,7 @@ class NeuralCLF(nn.Module):
         return type_output, polarity_output, tense_output, certainty_output
 
 
-test = pd.read_csv("/data/test.csv")
+test = pd.read_csv("./data/test.csv")
 
 # define dictionary
 Y1_dict = {"대화형": 0, "사실형": 1, "예측형": 2, "추론형": 3}
@@ -213,7 +213,7 @@ answers = []
 for str_type, str_polarity, str_tense, str_certainty in zip(type_list, polarity_list, tense_list, certainty_list):
         answers.append(str_type + "-" + str_polarity + "-" + str_tense + "-" + str_certainty)
 
-submission = pd.read_csv("/data/sample_submission.csv")
+submission = pd.read_csv("./data/sample_submission.csv")
 submission["label"] = answers
 
 print("saving prediction results...")
