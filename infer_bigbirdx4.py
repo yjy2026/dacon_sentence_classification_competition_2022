@@ -114,9 +114,7 @@ class NeuralCLF(nn.Module):
         return type_output, polarity_output, tense_output, certainty_output
 
 
-# naive train/test split
-df = pd.read_csv("train.csv")
-test = pd.read_csv("test.csv")
+test = pd.read_csv("./data/test.csv")
 
 # define dictionary
 Y1_dict = {"대화형": 0, "사실형": 1, "예측형": 2, "추론형": 3}
