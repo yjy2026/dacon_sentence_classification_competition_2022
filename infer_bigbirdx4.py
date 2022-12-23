@@ -213,7 +213,7 @@ answers = []
 for str_type, str_polarity, str_tense, str_certainty in zip(type_list, polarity_list, tense_list, certainty_list):
         answers.append(str_type + "-" + str_polarity + "-" + str_tense + "-" + str_certainty)
 
-submission = pd.read_csv("sample_submission.csv")
+submission = pd.read_csv("/data/sample_submission.csv")
 submission["label"] = answers
 
 print("saving prediction results...")
