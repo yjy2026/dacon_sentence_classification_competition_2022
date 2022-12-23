@@ -1,1 +1,1 @@
-# Dacon
+# Dacon Sentence Classification Competition
