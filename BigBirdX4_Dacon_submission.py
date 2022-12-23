@@ -30,11 +30,6 @@ seed_everything(7789) # some random seed
 
 device = torch.device("cuda:1") if torch.cuda.is_available() else torch.device("cpu")
 
-
-def replace_html(my_str):
-    parseText = re.sub("&quot;", "\"", my_str)
-    return parseText
-
 def create_folds(data, num_splits):
     data["kfold"] = -1
     mskf = MultilabelStratifiedKFold(n_splits=num_splits, shuffle=True, random_state=8888)
@@ -44,15 +39,11 @@ def create_folds(data, num_splits):
         data.loc[v_, "kfold"] = f
     return data
 
-# naive train/test split
-df = pd.read_csv("train.csv")
-test = pd.read_csv("test.csv")
+df = pd.read_csv("/data/train.csv")
 
 df = create_folds(df, 10)
 
 for f in range(10):
-    if f != 7:
-        continue
     print(f"===== validating on fold {f+1} =====")
     train, val = df[df["kfold"] != f], df[df["kfold"] == f]
 
@@ -62,38 +53,6 @@ for f in range(10):
     train_Y2 = train["극성"].values
     train_Y3 = train["시제"].values
     train_Y4 = train["확실성"].values
-
-    '''
-    print("initial train dataset sizes")
-    print(train_sentences.shape, train_Y1.shape, train_Y2.shape, train_Y3.shape, train_Y4.shape)
-    add_train_sentences = []
-    add_train_Y1 = []
-    add_train_Y2 = []
-    add_train_Y3 = []
-    add_train_Y4 = []
-    with open("backtranslated_sentences_dict_eng.pkl", "rb") as pkl_dict:
-        eng_aug_dict = pickle.load(pkl_dict)
-    for i in tqdm(range(len(train_sentences)), desc="augmenting data"):
-        if train_sentences[i] in eng_aug_dict.keys():
-                add_train_sentences.append(replace_html(eng_aug_dict[train_sentences[i]]))
-                add_train_Y1.append(train_Y1[i])
-                add_train_Y2.append(train_Y2[i])
-                add_train_Y3.append(train_Y3[i])
-                add_train_Y4.append(train_Y4[i])
-    add_train_sentences = np.array(add_train_sentences)
-    add_train_Y1 = np.array(add_train_Y1)
-    add_train_Y2 = np.array(add_train_Y2)
-    add_train_Y3 = np.array(add_train_Y3)
-    add_train_Y4 = np.array(add_train_Y4)
-    train_sentences = np.concatenate([train_sentences, add_train_sentences])
-    train_Y1 = np.concatenate([train_Y1, add_train_Y1])
-    train_Y2 = np.concatenate([train_Y2, add_train_Y2])
-    train_Y3 = np.concatenate([train_Y3, add_train_Y3])
-    train_Y4 = np.concatenate([train_Y4, add_train_Y4])
-
-    print("dataset shape after augmentation!")
-    print(train_sentences.shape, train_Y1.shape, train_Y2.shape, train_Y3.shape, train_Y4.shape)
-    '''
 
     val_sentences = val["문장"].values
     val_Y1 = val["유형"].values
@@ -146,7 +105,6 @@ for f in range(10):
 
     # define tokenizer
     tokenizer = AutoTokenizer.from_pretrained("monologg/kobigbird-bert-base")
-
 
     # define model
     class MeanPooling(nn.Module):
