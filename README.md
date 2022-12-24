@@ -1,1 +1,1 @@
-# Dacon Sentence Classification Competition
+# Dacon Sentence Classification Competition 2022
